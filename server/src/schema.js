@@ -1,4 +1,6 @@
-const typeDefs = `#graphql
+import gql from "graphql-tag"
+
+const typeDefs = gql`
 type Person {
     id: ID!
     firstName: String!
@@ -47,7 +49,7 @@ const resolvers = {
                 lastName: args.lastName
             }
 
-            people.unshift(newPerson)
+            people.push(newPerson)
 
             return newPerson
         },
@@ -82,7 +84,7 @@ const resolvers = {
                 personId: args.personId
             }
 
-            cars.unshift(newCar)
+            cars.push(newCar)
 
             return newCar
         },
