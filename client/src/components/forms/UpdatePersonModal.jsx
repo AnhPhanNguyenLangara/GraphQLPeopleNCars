@@ -7,7 +7,7 @@ import {useEffect, useState} from "react";
 
 export default function UpdatePersonModal({person}) {
 
-    const { id,firstName,lastName } = person
+    const { id,firstName,lastName} = person
 
     const [form] = Form.useForm()
     const [, forceUpdate] = useState()
@@ -43,6 +43,16 @@ export default function UpdatePersonModal({person}) {
                         query: GET_PEOPLE,
                         data: {people: newPeople}
                     })
+                },
+                optimisticResponse: {
+                    __type: "Mutation",
+                    updatePerson: {
+                        __type: "Person",
+                        id: id,
+                        firstName: firstName,
+                        lastName: lastName,
+                        ownedCars: person.ownedCars
+                    }
                 }
             })
             setIsModalOpen(false)
@@ -82,7 +92,7 @@ export default function UpdatePersonModal({person}) {
                     <Form.Item shouldUpdate={true}>
                         {() => (
                             // Update button always left enabled since form is prefilled
-                            <Button type={'primary'} htmlType={'submit'} loading={loading}
+                            <Button type={'primary'} htmlType={'submit'}
                                     // disabled={!form.isFieldsTouched(true) || form.getFieldsError().filter(({errors}) => errors.length).length}
                             >
                                 Update Person

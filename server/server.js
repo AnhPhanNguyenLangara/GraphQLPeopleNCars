@@ -20,6 +20,11 @@ const startApolloServer = async (typeDefs, resolvers) => {
 
     await server.start()
 
+    // 800ms delay to everything to test optimistic updates
+    app.use((req, res, next) => {
+        setTimeout(next, 1000);
+    });
+
     app.use(
         '/graphql', cors(), bodyParser.json(),
         expressMiddleware(server, {

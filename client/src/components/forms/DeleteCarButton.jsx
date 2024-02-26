@@ -24,6 +24,18 @@ export default function DeleteCarButton({id}) {
                         query: GET_PEOPLE,
                         data: {people: newPeople}
                     })
+                },
+                optimisticResponse: {
+                    __type: "Mutation",
+                    removeCar: {
+                        __type: "Car",
+                        id: id,
+                        make: "whatever",
+                        model: "whatever",
+                        personId: "whatever",
+                        price: "whatever",
+                        year: "whatever",
+                    }
                 }
             })
         }

@@ -52,6 +52,18 @@ export default function UpdateCarModal({ownerId,peopleList,car}) {
                         query: GET_PEOPLE,
                         data: {people: newPeople}
                     })
+                },
+                optimisticResponse: {
+                    __type: "Mutation",
+                    updateCar: {
+                        __type: "Car",
+                        id: id,
+                        make: make,
+                        model: model,
+                        price: price,
+                        year: year,
+                        personId: personId
+                    }
                 }
             })
             setIsModalOpen(false)
@@ -121,7 +133,7 @@ export default function UpdateCarModal({ownerId,peopleList,car}) {
                     <Form.Item shouldUpdate={true}>
                         {() => (
                             // Update button always left enabled since form is prefilled
-                            <Button type={'primary'} htmlType={'submit'} loading={loading}
+                            <Button type={'primary'} htmlType={'submit'}
                                     // disabled={!form.isFieldsTouched(true) || form.getFieldsError().filter(({errors}) => errors.length).length}
                             >
                                 Update Car

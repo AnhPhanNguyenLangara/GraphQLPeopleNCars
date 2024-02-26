@@ -47,6 +47,18 @@ export default function AddCar({peopleList}) {
                     query: GET_PEOPLE,
                     data: {people: newPeople}
                 })
+            },
+            optimisticResponse: {
+                __typename: "Mutation",
+                addCar: {
+                    __typename: "Car",
+                    id: id,
+                    year: year,
+                    make: make,
+                    model: model,
+                    price: price,
+                    personId: personId,
+                }
             }
         })
     }
@@ -109,7 +121,7 @@ export default function AddCar({peopleList}) {
                     </Form.Item>
                     <Form.Item shouldUpdate={true}>
                         {() => (
-                            <Button type={'primary'} htmlType={'submit'} loading={loading}
+                            <Button type={'primary'} htmlType={'submit'}
                                     disabled={!form.isFieldsTouched(true) || form.getFieldsError().filter(({errors}) => errors.length).length}
                             >
                                 Add Car

@@ -36,8 +36,18 @@ export default function AddPerson() {
                 const {people} = cache.readQuery({query: GET_PEOPLE})
                 cache.writeQuery({
                     query: GET_PEOPLE,
-                    data: {people: [...people,addPerson]}
+                    data: {people: [...people, addPerson]}
                 })
+            },
+            optimisticResponse: {
+                __type: "Mutation",
+                addPerson: {
+                    __type: "Person",
+                    id: id,
+                    firstName: firstName,
+                    lastName: lastName,
+                    ownedCars: []
+                }
             }
         })
     }
@@ -74,8 +84,8 @@ export default function AddPerson() {
                     </Form.Item>
                     <Form.Item shouldUpdate={true}>
                         {() => (
-                            <Button type={'primary'} htmlType={'submit'} loading={loading}
-                                disabled={!form.isFieldsTouched(true) || form.getFieldsError().filter(({errors}) => errors.length).length}
+                            <Button type={'primary'} htmlType={'submit'}
+                                    disabled={!form.isFieldsTouched(true) || form.getFieldsError().filter(({errors}) => errors.length).length}
                             >
                                 Add Person
                             </Button>

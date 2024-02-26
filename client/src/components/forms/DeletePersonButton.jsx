@@ -18,6 +18,16 @@ export default function DeletePersonButton({id}) {
                         query: GET_PEOPLE,
                         data: {people: newPeople}
                     })
+                },
+                optimisticResponse: {
+                    __type: "Mutation",
+                    removePerson: {
+                        __type: "Person",
+                        id: id,
+                        firstName: "whatever",
+                        lastName: "whatever",
+                        ownedCars : []
+                    }
                 }
             })
         }
