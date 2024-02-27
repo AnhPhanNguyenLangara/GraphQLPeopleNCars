@@ -17,16 +17,18 @@ export default function People() {
     } else if (error) {
         output = <p>ERROR</p>
     } else {
-        const peopleList = data.people.map(({id,firstName,lastName,}) => ({id,firstName,lastName}))
-        const peopleCards = data.people.map(person => (
-            <Card key={person.id} title={`${person.firstName} ${person.lastName}`} actions={
-                [<UpdatePersonModal person={person}></UpdatePersonModal>,<DeletePersonButton id={person.id}/>]
-            }>
-                <Cars ownerId={person.id} cars={person.ownedCars} peopleList={peopleList}></Cars>
-                <Link to={`/people/${person.id}`}>
-                    Learn More
-                </Link>
-            </Card>))
+        const peopleList = data.people.map(({id, firstName, lastName,}) => ({id, firstName, lastName}))
+        const peopleCards = data.people.length > 0 ? data.people.map(person => (
+                <Card key={person.id} title={`${person.firstName} ${person.lastName}`} actions={
+                    [<UpdatePersonModal person={person}></UpdatePersonModal>, <DeletePersonButton id={person.id}/>]
+                }>
+                    <Cars ownerId={person.id} cars={person.ownedCars} peopleList={peopleList}></Cars>
+                    <Link to={`/people/${person.id}`}>
+                        Learn More
+                    </Link>
+                </Card>)) :
+            <p style={{fontSize: '32px', fontWeight: 'bold', textAlign: 'center'}}>Start adding some
+                People Please!</p>
         output = (
             <>
                 <AddCar peopleList={peopleList}></AddCar>
