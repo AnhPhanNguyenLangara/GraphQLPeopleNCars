@@ -1,7 +1,7 @@
-import { EditOutlined } from "@ant-design/icons";
+import {EditOutlined} from "@ant-design/icons";
 import {useMutation} from "@apollo/client";
 import {Button, Form, Input, Modal, Select} from "antd";
-import {UPDATE_CAR, GET_PEOPLE} from "../../graphql/queries.js";
+import {GET_PEOPLE, UPDATE_CAR} from "../../graphql/queries.js";
 import {useEffect, useState} from "react";
 
 export default function UpdateCarModal({ownerId,peopleList,car}) {
@@ -41,13 +41,34 @@ export default function UpdateCarModal({ownerId,peopleList,car}) {
                     personId: personId
                 },
                 update: (cache, {data: {updateCar}}) => {
+                    // console.log(updateCar)
                     const {people} = cache.readQuery({query: GET_PEOPLE})
-                    const newPeople = people.map(person => {
-                        if (person.id === updateCar.personId) {
-                            return {...person,ownedCars: person.ownedCars.map(car => car.id===updateCar.id? updateCar:car)}
-                        }
-                        else return person
-                    })
+                    let newPeople;
+                    // Simple case: same owner, modified car data
+                    if (updateCar.personId===ownerId) {
+                        newPeople = people.map(person => {
+                            if (person.id === updateCar.personId) {
+                                return {...person,ownedCars: person.ownedCars.map(car => car.id===updateCar.id? updateCar:car)}
+                            }
+
+                            else return person
+                        })
+                    } else {
+                    //  Remove from old owner
+                        const withoutOld = people.map(person => {
+                            if (person.id === ownerId) {
+                                return {...person,ownedCars: person.ownedCars.filter(car => car.id!==updateCar.id)}
+                            }
+                            else return person
+                        })
+                    //  Give to new owner
+                        newPeople = withoutOld.map(person => {
+                            if (person.id === updateCar.personId) {
+                                return {...person, ownedCars: [...person.ownedCars, updateCar]}
+                            }
+                            else return person
+                        })
+                    }
                     cache.writeQuery({
                         query: GET_PEOPLE,
                         data: {people: newPeople}
