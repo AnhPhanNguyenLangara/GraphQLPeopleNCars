@@ -89,16 +89,14 @@ const resolvers = {
             return newCar
         },
         updateCar: (parent, args) => {
-            const target = cars.find(car => car.id === args.id)
-            if (!target) {
+            if (!(cars.find(car => car.id === args.id))) {
                 throw new Error(`Couldn\'t find car with id ${args.id}`)
             } else {
-                target.year = args.year
-                target.make = args.make
-                target.price = args.price
-                target.model = args.model
-                target.personId = args.personId
-                return target
+                const {id,year, make, price, model, personId} = args
+                cars = cars.filter(car => car.id !== args.id)
+                const newCar ={id,year,price,make,model,personId}
+                cars.push(newCar)
+                return newCar
             }
         },
         removeCar: (parent,args) => {
