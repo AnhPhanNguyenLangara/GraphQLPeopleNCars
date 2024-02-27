@@ -39,9 +39,8 @@ export default function AddCar({peopleList}) {
                 const {people} = cache.readQuery({query: GET_PEOPLE})
                 const newPeople = people.map(person => {
                     if (person.id === addCar.personId) {
-                        return {...person,ownedCars: [...person.ownedCars,addCar]}
-                    }
-                    else return person
+                        return {...person, ownedCars: [...person.ownedCars, addCar]}
+                    } else return person
                 })
                 cache.writeQuery({
                     query: GET_PEOPLE,
@@ -64,73 +63,75 @@ export default function AddCar({peopleList}) {
     }
 
     return (
-        <>
-            <h2 style={{textAlign: 'center'}}>Add Car</h2>
-            <div style={{
-                display: 'grid',
-                justifyContent: 'center'
-            }}>
-                <Form
-                    name={'add-car-form'}
-                    layout={'inline'}
-                    size={'large'}
-                    style={{marginBottom: '40px'}}
-                    form={form}
-                    onFinish={onFinish}
-                    preserve={false}
-                >
-                    <Form.Item
-                        label={'Year'}
-                        name={'year'}
-                        rules={[{required: true, message: 'Please enter a year'}]}
+        peopleList.length > 0 && (
+            <>
+                <h2 style={{textAlign: 'center'}}>Add Car</h2>
+                <div style={{
+                    display: 'grid',
+                    justifyContent: 'center'
+                }}>
+                    <Form
+                        name={'add-car-form'}
+                        layout={'inline'}
+                        size={'large'}
+                        style={{marginBottom: '40px'}}
+                        form={form}
+                        onFinish={onFinish}
+                        preserve={false}
                     >
-                        <Input placeholder={'e.g. 1976'}></Input>
-                    </Form.Item>
-                    <Form.Item
-                        label={'Make'}
-                        name={'make'}
-                        rules={[{required: true, message: 'Please enter a make'}]}
-                    >
-                        <Input placeholder={'e.g. Toyota'}></Input>
-                    </Form.Item>
-                    <Form.Item
-                        label={'Model'}
-                        name={'model'}
-                        rules={[{required: true, message: 'Please enter a model'}]}
-                    >
-                        <Input placeholder={'e.g. Supra'}></Input>
-                    </Form.Item>
-                    <Form.Item
-                        label={'Price'}
-                        name={'price'}
-                        rules={[{required: true, message: 'Please enter a price'}]}
-                    >
-                        <Input placeholder={'e.g. 40000'}></Input>
-                    </Form.Item>
-                    <Form.Item
-                        label={'Person'}
-                        name={'personId'}
-                        rules={[{required: true, message: 'Please choose an owner'}]}
-                    >
-                        <Select
-                            placeholder="Select a person"
+                        <Form.Item
+                            label={'Year'}
+                            name={'year'}
+                            rules={[{required: true, message: 'Please enter a year'}]}
                         >
-                            {peopleList.map(person => <Select.Option key={person.id}
-                                                                     value={person.id}>{person.firstName} {person.lastName}</Select.Option>)}
-                        </Select>
-                    </Form.Item>
-                    <Form.Item shouldUpdate={true}>
-                        {() => (
-                            <Button type={'primary'} htmlType={'submit'}
-                                    disabled={!form.isFieldsTouched(true) || form.getFieldsError().filter(({errors}) => errors.length).length}
+                            <Input placeholder={'e.g. 1976'}></Input>
+                        </Form.Item>
+                        <Form.Item
+                            label={'Make'}
+                            name={'make'}
+                            rules={[{required: true, message: 'Please enter a make'}]}
+                        >
+                            <Input placeholder={'e.g. Toyota'}></Input>
+                        </Form.Item>
+                        <Form.Item
+                            label={'Model'}
+                            name={'model'}
+                            rules={[{required: true, message: 'Please enter a model'}]}
+                        >
+                            <Input placeholder={'e.g. Supra'}></Input>
+                        </Form.Item>
+                        <Form.Item
+                            label={'Price'}
+                            name={'price'}
+                            rules={[{required: true, message: 'Please enter a price'}]}
+                        >
+                            <Input placeholder={'e.g. 40000'}></Input>
+                        </Form.Item>
+                        <Form.Item
+                            label={'Person'}
+                            name={'personId'}
+                            rules={[{required: true, message: 'Please choose an owner'}]}
+                        >
+                            <Select
+                                placeholder="Select a person"
                             >
-                                Add Car
-                            </Button>
-                        )}
-                    </Form.Item>
-                </Form>
-                {error && <p>ERROR</p>}
-            </div>
-        </>
+                                {peopleList.map(person => <Select.Option key={person.id}
+                                                                         value={person.id}>{person.firstName} {person.lastName}</Select.Option>)}
+                            </Select>
+                        </Form.Item>
+                        <Form.Item shouldUpdate={true}>
+                            {() => (
+                                <Button type={'primary'} htmlType={'submit'}
+                                        disabled={!form.isFieldsTouched(true) || form.getFieldsError().filter(({errors}) => errors.length).length}
+                                >
+                                    Add Car
+                                </Button>
+                            )}
+                        </Form.Item>
+                    </Form>
+                    {error && <p>ERROR</p>}
+                </div>
+            </>
+        )
     )
 }
