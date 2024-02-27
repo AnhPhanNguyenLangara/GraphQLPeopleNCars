@@ -15,7 +15,7 @@ export default function DeleteCarButton({id}) {
                 update: (cache, {data: {removeCar}}) => {
                     const {people} = cache.readQuery({query: GET_PEOPLE})
                     const newPeople = people.map(person => {
-                        if (person.id === removeCar.personId) {
+                        if (person.ownedCars.find(car => car.id === removeCar.id)) {
                             return {...person,ownedCars: person.ownedCars.filter(car => car.id!==removeCar.id)}
                         }
                         else return person
